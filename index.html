@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Daily Prophet - Marauder's Edition</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Pirata+One&family=Crimson+Text:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { 
+            --hogwarts-red: #740001; 
+            --gold: #d4af37; 
+            --parchment: #f4e4bc; 
+            --dark: #1a1a1a; 
+            --ink: #3d2b1f; /* Warna tinta koran tua */
+        }
+
+        * { box-sizing: border-box; cursor: none; }
+        body, html { 
+            margin: 0; padding: 0; 
+            font-family: 'Crimson Text', serif; 
+            background-color: var(--dark); 
+            overflow-x: hidden; scroll-behavior: smooth; 
+        }
+
+        /* Magic Wand & Snitch */
+        #wand { position: fixed; width: 45px; height: 45px; background: url('https://cdn-icons-png.flaticon.com/512/1065/1065455.png') no-repeat center/contain; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); }
+        .sparkle { position: fixed; width: 4px; height: 4px; background: var(--gold); border-radius: 50%; pointer-events: none; z-index: 9999; animation: fly 0.8s forwards; }
+        @keyframes fly { to { transform: translateY(30px) scale(0); opacity: 0; } }
+
+        #snitch { position: fixed; width: 25px; height: 25px; background: radial-gradient(circle, #fff700, var(--gold)); border-radius: 50%; z-index: 9998; box-shadow: 0 0 15px var(--gold); pointer-events: none; transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        #snitch::before, #snitch::after { content: ""; position: absolute; top: 5px; width: 35px; height: 8px; background: rgba(255,255,255,0.7); border-radius: 50%; animation: wing 0.1s infinite alternate; }
+        #snitch::before { left: -30px; transform-origin: right; } #snitch::after { right: -30px; transform-origin: left; }
+        @keyframes wing { from { transform: rotateX(0deg); } to { transform: rotateX(80deg); } }
+
+        /* Container Koran */
+        #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        
+        main { 
+            position: relative; z-index: 2; max-width: 600px; margin: 20px auto; 
+            background: url('https://www.transparenttextures.com/patterns/aged-paper.png'), var(--parchment); 
+            box-shadow: 0 0 50px rgba(0,0,0,0.8); min-height: 100vh; padding: 20px;
+            border: 10px double var(--ink);
+        }
+
+        .newspaper-header { text-align: center; border-bottom: 5px solid var(--ink); margin-bottom: 20px; padding-bottom: 10px; }
+        .newspaper-header h1 { font-family: 'Pirata One', cursive; font-size: clamp(2.2rem, 8vw, 4rem); margin: 0; color: var(--ink); text-transform: uppercase; letter-spacing: -1px; }
+        .newspaper-meta { display: flex; justify-content: space-between; font-weight: bold; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); padding: 5px; font-size: 0.8rem; color: var(--ink); }
+
+        section { padding: 30px 10px; text-align: center; border-bottom: 1px solid rgba(0,0,0,0.1); }
+        .couple-img { width: 100%; max-width: 320px; height: auto; border: 2px solid var(--ink); padding: 8px; background: #fff; transform: rotate(-2deg); box-shadow: 5px 5px 15px rgba(0,0,0,0.2); margin: 20px 0; }
+
+        /* Moving Gallery */
+        .gallery-wrapper { display: flex; justify-content: center; align-items: center; height: 400px; position: relative; width: 100%; }
+        .magic-card { position: absolute; width: 160px; height: 230px; background: white; border: 6px solid white; border-bottom: 30px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.3); transition: 0.5s; cursor: pointer; overflow: hidden; }
+        .magic-card img { width: 100%; height: 100%; object-fit: cover; filter: sepia(0.2); }
+        .card-1 { transform: rotate(-12deg) translateX(-70px); z-index: 1; }
+        .card-2 { transform: rotate(0deg) translateY(-10px); z-index: 2; }
+        .card-3 { transform: rotate(12deg) translateX(70px); z-index: 1; }
+        .magic-card.spread { transform: scale(1.6) rotate(0deg) !important; z-index: 100 !important; box-shadow: 0 0 50px var(--gold); }
+
+        /* UI Elements */
+        #timer { display: flex; justify-content: space-around; background: rgba(0,0,0,0.05); padding: 15px; border: 2px solid var(--ink); margin: 20px 0; font-family: 'Pirata One', cursive; font-size: 1.2rem; }
+        .bank-card { background: rgba(255,255,255,0.4); padding: 15px; border: 2px dashed var(--ink); border-radius: 10px; margin-top: 10px; }
+        .howler-box { background: var(--hogwarts-red); color: var(--gold); padding: 25px; border-radius: 5px; clip-path: polygon(0% 0%, 100% 0%, 100% 90%, 50% 100%, 0% 90%); }
+        .btn-magic { background: var(--gold); color: var(--dark); border: none; padding: 12px 25px; font-family: 'Pirata One', cursive; font-size: 1.2rem; border-radius: 50px; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+
+        /* Cover & Animations */
+        #cover { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--dark); display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--gold); z-index: 2000; transition: 1s; text-align: center; padding: 20px; }
+        .hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1s ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div id="wand"></div>
+    <div id="snitch"></div>
+    <div id="particles-js"></div>
+    <audio id="bg-music" loop><source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg"></audio>
+
+    <div id="cover">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Hogwarts_coat_of_arms_colored_with_shading.svg/1200px-Hogwarts_coat_of_arms_colored_with_shading.svg.png" width="120" style="margin-bottom: 20px;">
+        <h2 id="typing-text" style="font-family: 'Crimson Text'; min-height: 50px;"></h2>
+        <button class="btn-magic" onclick="revealMagic()">I SOLEMNLY SWEAR THAT I AM UP TO NO GOOD</button>
+    </div>
+
+    <main>
+        <div class="newspaper-header">
+            <h1>THE DAILY PROPHET</h1>
+            <div class="newspaper-meta">
+                <span>VOL. 9¾ - NO. 12</span>
+                <span>SATURDAY, 12 DEC 2026</span>
+                <span>PRICE: 5 SICKLES</span>
+            </div>
+        </div>
+
+        <section class="reveal">
+            <h3 style="letter-spacing: 2px;">LATEST NEWS: THE UNBREAKABLE VOW</h3>
+            <img src="https://drive.google.com/thumbnail?id=14T0vZwJjC-8R5SeYYSeAQDM4q0A4QC6a&sz=w1000" class="couple-img">
+            <h1 style="font-family: 'Great Vibes'; font-size: 3.5rem; color: var(--hogwarts-red); margin: 0;">Romeo & Juliet</h1>
+            <p><i>"A union more powerful than any Elder Wand. The magic begins soon!"</i></p>
+        </section>
+
+        <section class="reveal">
+            <h2>DAYS UNTIL CEREMONY</h2>
+            <div id="timer">
+                <div><span id="days">00</span><br>DAYS</div>
+                <div><span id="hours">00</span><br>HRS</div>
+                <div><span id="mins">00</span><br>MINS</div>
+                <div><span id="secs">00</span><br>SECS</div>
+            </div>
+        </section>
+
+        <section class="reveal">
+            <h2>MOVING PORTRAITS</h2>
+            <div class="gallery-wrapper">
+                <div class="magic-card card-1" onclick="this.classList.toggle('spread')">
+                    <img src="https://drive.google.com/thumbnail?id=14T0vZwJjC-8R5SeYYSeAQDM4q0A4QC6a&sz=w1000">
+                </div>
+                <div class="magic-card card-2" onclick="this.classList.toggle('spread')">
+                    <img src="https://drive.google.com/thumbnail?id=14T0vZwJjC-8R5SeYYSeAQDM4q0A4QC6a&sz=w1000">
+                </div>
+                <div class="magic-card card-3" onclick="this.classList.toggle('spread')">
+                    <img src="https://drive.google.com/thumbnail?id=14T0vZwJjC-8R5SeYYSeAQDM4q0A4QC6a&sz=w1000">
+                </div>
+            </div>
+            <p><i>(Tap the pictures to reveal the magic)</i></p>
+        </section>
+
+        <section class="reveal">
+            <h2>GRINGOTTS BANKING</h2>
+            <div class="bank-card">
+                <strong>BANK BNI - 1234567890</strong><br>
+                <span>A.N ROMEO & JULIET</span><br>
+                <button class="btn-magic" style="font-size: 0.9rem; padding: 5px 15px;" onclick="copyAcc()">COPY VAULT NO.</button>
+            </div>
+        </section>
+
+        <section class="reveal">
+            <div class="howler-box">
+                <h2 style="color: white; margin-top:0;">SEND A HOWLER</h2>
+                <input type="text" id="sender" placeholder="Your Wizard Name" style="width:100%; margin-bottom:10px; padding:8px; border-radius:5px; border:none;">
+                <textarea id="message" rows="3" placeholder="Write your wishes..." style="width:100%; margin-bottom:10px; padding:8px; border-radius:5px; border:none;"></textarea>
+                <button class="btn-magic" style="background: white; color: var(--hogwarts-red);" onclick="sendWA()">SEND OWL POST</button>
+            </div>
+            <p style="margin-top: 20px; font-weight: bold; color: var(--ink);">MISCHIEF MANAGED!</p>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Wand Sparkles
+        const wand = document.getElementById('wand');
+        window.addEventListener('mousemove', (e) => {
+            wand.style.top = e.clientY + 'px'; wand.style.left = e.clientX + 'px';
+            const s = document.createElement('div'); s.className = 'sparkle';
+            s.style.top = e.clientY + 'px'; s.style.left = e.clientX + 'px';
+            document.body.appendChild(s); setTimeout(() => s.remove(), 800);
+        });
+
+        // Golden Snitch
+        setInterval(() => {
+            const snitch = document.getElementById('snitch');
+            snitch.style.left = Math.random() * 90 + 'vw';
+            snitch.style.top = Math.random() * 90 + 'vh';
+        }, 1200);
+
+        // Marauder's Footsteps Logic (Anti-Fail Version)
+        function createFootstep() {
+            const step = document.createElement('div');
+            step.innerHTML = '👣';
+            step.style.position = 'fixed';
+            step.style.fontSize = '24px';
+            step.style.zIndex = '5';
+            step.style.pointerEvents = 'none';
+            step.style.transition = 'opacity 2s ease-out';
+            step.style.filter = 'sepia(1) saturate(8) hue-rotate(-30deg)'; // Warna tinta cokelat tua
+            
+            step.style.left = Math.random() * (window.innerWidth - 30) + 'px';
+            step.style.top = Math.random() * (window.innerHeight - 30) + 'px';
+            step.style.transform = `rotate(${Math.random() * 360}deg)`;
+            
+            document.body.appendChild(step);
+
+            setTimeout(() => { step.style.opacity = '0'; }, 1000);
+            setTimeout(() => { step.remove(); }, 3000);
+        }
+
+        // Typing Effect Cover
+        const text = "Special Owl Post for a Special Wizard...";
+        let idx = 0;
+        function typing() {
+            if(idx < text.length) {
+                document.getElementById('typing-text').innerHTML += text.charAt(idx);
+                idx++; setTimeout(typing, 80);
+            }
+        }
+        window.onload = typing;
+
+        // Reveal Logic
+        function revealMagic() {
+            document.getElementById('cover').classList.add('hidden');
+            document.getElementById('bg-music').play();
+            document.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
+            
+            // Start Footsteps
+            setInterval(createFootstep, 200);
+        }
+
+        function copyAcc() {
+            navigator.clipboard.writeText("1234567890");
+            alert("Gringotts Vault Number Copied!");
+        }
+
+        function sendWA() {
+            const s = document.getElementById('sender').value;
+            const m = document.getElementById('message').value;
+            if(!s || !m) return alert("Please fill the name and wishes!");
+            window.open(`https://wa.me/628123456789?text=Lumos! I am ${s}. %0A%0A${m}`, '_blank');
+        }
+
+        // Countdown
+        const target = new Date("Dec 12, 2026 09:00:00").getTime();
+        setInterval(() => {
+            const diff = target - new Date().getTime();
+            if(diff > 0) {
+                document.getElementById('days').innerText = Math.floor(diff/(1000*60*60*24));
+                document.getElementById('hours').innerText = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+                document.getElementById('mins').innerText = Math.floor((diff%(1000*60*60))/(1000*60));
+                document.getElementById('secs').innerText = Math.floor((diff%(1000*60))/1000);
+            }
+        }, 1000);
+
+        particlesJS("particles-js", { "particles": { "number": { "value": 30 }, "color": { "value": "#d4af37" }, "move": { "enable": true, "speed": 1 } } });
+    </script>
+</body>
+</html>
