@@ -13,7 +13,7 @@
             --gold: #d4af37; 
             --parchment: #f4e4bc; 
             --dark: #1a1a1a; 
-            --ink: #3d2b1f; /* Warna tinta koran tua */
+            --ink: #3d2b1f; 
         }
 
         * { box-sizing: border-box; cursor: none; }
@@ -24,7 +24,6 @@
             overflow-x: hidden; scroll-behavior: smooth; 
         }
 
-        /* Magic Wand & Snitch */
         #wand { position: fixed; width: 45px; height: 45px; background: url('https://cdn-icons-png.flaticon.com/512/1065/1065455.png') no-repeat center/contain; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); }
         .sparkle { position: fixed; width: 4px; height: 4px; background: var(--gold); border-radius: 50%; pointer-events: none; z-index: 9999; animation: fly 0.8s forwards; }
         @keyframes fly { to { transform: translateY(30px) scale(0); opacity: 0; } }
@@ -34,7 +33,6 @@
         #snitch::before { left: -30px; transform-origin: right; } #snitch::after { right: -30px; transform-origin: left; }
         @keyframes wing { from { transform: rotateX(0deg); } to { transform: rotateX(80deg); } }
 
-        /* Container Koran */
         #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
         
         main { 
@@ -51,7 +49,6 @@
         section { padding: 30px 10px; text-align: center; border-bottom: 1px solid rgba(0,0,0,0.1); }
         .couple-img { width: 100%; max-width: 320px; height: auto; border: 2px solid var(--ink); padding: 8px; background: #fff; transform: rotate(-2deg); box-shadow: 5px 5px 15px rgba(0,0,0,0.2); margin: 20px 0; }
 
-        /* Moving Gallery */
         .gallery-wrapper { display: flex; justify-content: center; align-items: center; height: 400px; position: relative; width: 100%; }
         .magic-card { position: absolute; width: 160px; height: 230px; background: white; border: 6px solid white; border-bottom: 30px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.3); transition: 0.5s; cursor: pointer; overflow: hidden; }
         .magic-card img { width: 100%; height: 100%; object-fit: cover; filter: sepia(0.2); }
@@ -60,13 +57,11 @@
         .card-3 { transform: rotate(12deg) translateX(70px); z-index: 1; }
         .magic-card.spread { transform: scale(1.6) rotate(0deg) !important; z-index: 100 !important; box-shadow: 0 0 50px var(--gold); }
 
-        /* UI Elements */
         #timer { display: flex; justify-content: space-around; background: rgba(0,0,0,0.05); padding: 15px; border: 2px solid var(--ink); margin: 20px 0; font-family: 'Pirata One', cursive; font-size: 1.2rem; }
         .bank-card { background: rgba(255,255,255,0.4); padding: 15px; border: 2px dashed var(--ink); border-radius: 10px; margin-top: 10px; }
         .howler-box { background: var(--hogwarts-red); color: var(--gold); padding: 25px; border-radius: 5px; clip-path: polygon(0% 0%, 100% 0%, 100% 90%, 50% 100%, 0% 90%); }
         .btn-magic { background: var(--gold); color: var(--dark); border: none; padding: 12px 25px; font-family: 'Pirata One', cursive; font-size: 1.2rem; border-radius: 50px; cursor: pointer; transition: 0.3s; margin-top: 10px; }
 
-        /* Cover & Animations */
         #cover { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--dark); display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--gold); z-index: 2000; transition: 1s; text-align: center; padding: 20px; }
         .hidden { opacity: 0; visibility: hidden; pointer-events: none; }
         .reveal { opacity: 0; transform: translateY(30px); transition: 1s ease; }
@@ -130,6 +125,23 @@
         </section>
 
         <section class="reveal">
+            <h2>THE MARAUDER'S MAP LOCATION</h2>
+            <div style="border: 3px solid var(--ink); padding: 10px; background: rgba(0,0,0,0.05);">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.925695034629!2d107.5908070747568!3d-6.899491693099718!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e6423402773b%3A0xc39281a179549f57!2sGedung%20Sate!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
+                    width="100%" height="250" style="border:0; filter: sepia(0.6) contrast(1.2) grayscale(0.2);" allowfullscreen="" loading="lazy">
+                </iframe>
+                <div style="margin-top: 15px;">
+                    <p><strong>The Great Hall, Hogwarts Castle</strong></p>
+                    <p style="font-size: 0.9rem;">Jl. Diponegoro No.22, Bandung, Jawa Barat</p>
+                    <button class="btn-magic" onclick="window.open('https://maps.app.goo.gl/PzB6YmYyXm7S9Yt69', '_blank')">
+                        APPEARECIUM LOCATION
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="reveal">
             <h2>GRINGOTTS BANKING</h2>
             <div class="bank-card">
                 <strong>BANK BNI - 1234567890</strong><br>
@@ -151,7 +163,6 @@
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // Wand Sparkles
         const wand = document.getElementById('wand');
         window.addEventListener('mousemove', (e) => {
             wand.style.top = e.clientY + 'px'; wand.style.left = e.clientX + 'px';
@@ -160,14 +171,12 @@
             document.body.appendChild(s); setTimeout(() => s.remove(), 800);
         });
 
-        // Golden Snitch
         setInterval(() => {
             const snitch = document.getElementById('snitch');
             snitch.style.left = Math.random() * 90 + 'vw';
             snitch.style.top = Math.random() * 90 + 'vh';
         }, 1200);
 
-        // Marauder's Footsteps Logic (Anti-Fail Version)
         function createFootstep() {
             const step = document.createElement('div');
             step.innerHTML = '👣';
@@ -176,19 +185,15 @@
             step.style.zIndex = '5';
             step.style.pointerEvents = 'none';
             step.style.transition = 'opacity 2s ease-out';
-            step.style.filter = 'sepia(1) saturate(8) hue-rotate(-30deg)'; // Warna tinta cokelat tua
-            
+            step.style.filter = 'sepia(1) saturate(8) hue-rotate(-30deg)';
             step.style.left = Math.random() * (window.innerWidth - 30) + 'px';
             step.style.top = Math.random() * (window.innerHeight - 30) + 'px';
             step.style.transform = `rotate(${Math.random() * 360}deg)`;
-            
             document.body.appendChild(step);
-
             setTimeout(() => { step.style.opacity = '0'; }, 1000);
             setTimeout(() => { step.remove(); }, 3000);
         }
 
-        // Typing Effect Cover
         const text = "Special Owl Post for a Special Wizard...";
         let idx = 0;
         function typing() {
@@ -199,13 +204,10 @@
         }
         window.onload = typing;
 
-        // Reveal Logic
         function revealMagic() {
             document.getElementById('cover').classList.add('hidden');
             document.getElementById('bg-music').play();
             document.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
-            
-            // Start Footsteps
             setInterval(createFootstep, 200);
         }
 
@@ -221,7 +223,6 @@
             window.open(`https://wa.me/628123456789?text=Lumos! I am ${s}. %0A%0A${m}`, '_blank');
         }
 
-        // Countdown
         const target = new Date("Dec 12, 2026 09:00:00").getTime();
         setInterval(() => {
             const diff = target - new Date().getTime();
